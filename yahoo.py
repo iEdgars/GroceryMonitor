@@ -57,8 +57,20 @@ processedEmails = []
 processedEmail = []
 def emailProcessLog(GroceryBrand: str, Email_ids):
     for i in Email_ids:
-        processedEmail = [GroceryBrand, i]
-        processedEmails.append(list(processedEmail))
+        status, email_data = imap_server.fetch(i, "(RFC822)")
+        email_message = email.message_from_bytes(email_data[0][1])
+        
+        encoded_subject = email_message['Subject']
+        decoded_subject = email.header.decode_header(encoded_subject)[0][0]
+        if isinstance(decoded_subject, bytes):
+            decoded_subject = decoded_subject.decode('utf-8')
+        
+        if decoded_subject == 'Jūsų apsipirkimo MAXIMOJE kvitas':
+            processedEmail = [GroceryBrand, i]
+            processedEmails.append(list(processedEmail))
+        else:
+            processedEmail = [f'{GroceryBrand} Other', i]
+            processedEmails.append(list(processedEmail))
 
 #Receipt items data:
 items = []
@@ -163,11 +175,17 @@ for i in maximaToAdd:
     status, email_data = imap_server.fetch(i, "(RFC822)")
     email_message = email.message_from_bytes(email_data[0][1])
     
-    msg1 = email_message.get_payload()[0]
-    msg1body = msg1.get_payload(decode=True)
-    singleEmail = msg1body.decode().split('\r\n')
-    readMaximaReceiptSummary(i, singleEmail)
-    readMaximaReceiptItems(i, msg1body)
+    encoded_subject = email_message['Subject']
+    decoded_subject = email.header.decode_header(encoded_subject)[0][0]
+    if isinstance(decoded_subject, bytes):
+        decoded_subject = decoded_subject.decode('utf-8')
+    
+    if decoded_subject == 'Jūsų apsipirkimo MAXIMOJE kvitas':
+        msg1 = email_message.get_payload()[0]
+        msg1body = msg1.get_payload(decode=True)
+        singleEmail = msg1body.decode().split('\r\n')
+        readMaximaReceiptSummary(i, singleEmail)
+        readMaximaReceiptItems(i, msg1body)
 
 #Write Summary data
 wksSummaryMaxima.append_rows(receiptSummaryDataFULL)
