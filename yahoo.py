@@ -33,10 +33,10 @@ def readMaximaReceiptSummary(EmailId: str, receipt):
         if 'RRN:' in i:
             receiptSummaryData[4] = i.split()[1]
         #Date
-        if 'LTF NM ' in i:
+        if 'LTF ' in i:
             receiptSummaryData[5] = f'{i.split()[3]}-{i.split()[4]}-{i.split()[5]}'
         #Time
-        if 'LTF NM ' in i:
+        if 'LTF ' in i:
             receiptSummaryData[6] = i.split()[6]
         #GroceryBrand
         if 'MAXIMA LT' in i:
@@ -82,10 +82,10 @@ def readMaximaReceiptItems(EmailId: str, receipt):
         if '<pre>Kvitas ' in i:
             receiptID = i.split()[1]
         #Date
-        if 'LTF NM ' in i:
+        if 'LTF ' in i:
             receiptDate = f'{i.split()[3]}-{i.split()[4]}-{i.split()[5]}'
         #Time
-        if 'LTF NM ' in i:
+        if 'LTF ' in i:
             receiptTime = i.split()[6]
 
 
