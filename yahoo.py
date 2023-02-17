@@ -16,7 +16,7 @@ receiptSummaryDataFULL = []
 receiptSummaryData = []
 def readMaximaReceiptSummary(EmailId: str, receipt):
     receiptSummaryData.clear()
-    for i in range(0, 11):
+    for i in range(0, 12):
         receiptSummaryData.append('')
     receiptSummaryData[0] = EmailId
     for i in receipt:
@@ -24,32 +24,34 @@ def readMaximaReceiptSummary(EmailId: str, receipt):
         if '<pre>Kvitas ' in i:
             receiptSummaryData[1] = i.split()[1]
         #BankReceipt_id
-        if 'KVITO NR' in i:
+        if 'KVITO NR' in i or 'Kvito nr' in i:
             receiptSummaryData[2] = i.split()[2]
         #Receipt_Document#
         if 'DOKUMENTO NR' in i:
             receiptSummaryData[3] = i.split()[2]
         #RRN
-        if 'RRN:' in i:
+        if 'RRN' in i:
             receiptSummaryData[4] = i.split()[1]
         #Date
+        if 'Inv. Nr.' in i:
+            receiptSummaryData[5] = i.split()[2]
         if 'LTF ' in i:
-            receiptSummaryData[5] = f'{i.split()[3]}-{i.split()[4]}-{i.split()[5]}'
+            receiptSummaryData[6] = f'{i.split()[3]}-{i.split()[4]}-{i.split()[5]}'
         #Time
         if 'LTF ' in i:
-            receiptSummaryData[6] = i.split()[6]
+            receiptSummaryData[7] = i.split()[6]
         #GroceryBrand
         if 'MAXIMA LT' in i:
-            receiptSummaryData[7] = 'MAXIMA LT'
+            receiptSummaryData[8] = 'MAXIMA LT'
         #Address
         if 'MAXIMA LT, UAB' in i:
-            receiptSummaryData[8] = i.split('<br />')[1].split(' Kasa Nr.')[0][:-1]
+            receiptSummaryData[9] = i.split('<br />')[1].split(' Kasa Nr.')[0][:-1]
         #TotalAmount
         if 'Apsipirkimo suma:' in i:
-            receiptSummaryData[9] = i.split(': ')[1][:-4]
+            receiptSummaryData[10] = i.split(': ')[1][:-4]
         #TotalDiscount
         if 'Kvito nuolaidų suma:' in i:
-            receiptSummaryData[10] = i.split(': ')[1][:-4]
+            receiptSummaryData[11] = i.split(': ')[1][:-4]
     receiptSummaryDataFULL.append(list(receiptSummaryData))
 
 #Processed Emails:
