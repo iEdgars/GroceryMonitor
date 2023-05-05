@@ -3,6 +3,7 @@ import imaplib
 import email
 import json
 from decimal import Decimal
+from datetime import date
 
 #connecting to GSeets and selecting the file
 sa = gspread.service_account(filename="sa_creds.json")
@@ -58,9 +59,10 @@ def readMaximaReceiptSummary(EmailId: str, receipt):
 processedEmails = []
 processedEmail = []
 def emailProcessLog(GroceryBrand: str, Email_ids):
+    processDate = date.today().strftime("%Y-%m-%d")
     for i in Email_ids:
         status, email_data = imap_server.fetch(i, "(RFC822)")
-        email_message = email.message_from_bytes(email_data[0][1])
+        email_message = email.message_from_bytes(email_data[0][1])        
         
         encoded_subject = email_message['Subject']
         decoded_subject = email.header.decode_header(encoded_subject)[0][0]
@@ -68,10 +70,10 @@ def emailProcessLog(GroceryBrand: str, Email_ids):
             decoded_subject = decoded_subject.decode('utf-8')
         
         if decoded_subject == 'Jūsų apsipirkimo MAXIMOJE kvitas':
-            processedEmail = [GroceryBrand, i]
+            processedEmail = [GroceryBrand, i, processDate]
             processedEmails.append(list(processedEmail))
         else:
-            processedEmail = [f'{GroceryBrand} Other', i]
+            processedEmail = [f'{GroceryBrand} Other', i, processDate]
             processedEmails.append(list(processedEmail))
 
 #Receipt items data:
