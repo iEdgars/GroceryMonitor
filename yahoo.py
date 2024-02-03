@@ -16,6 +16,7 @@ with open("logfile.txt", "a") as file:
     # Write the time and "Started" to the file
     file.write(f'{time_string} Started\n')
 
+
 #connecting to GSeets and selecting the file
 sa = gspread.service_account(filename="sa_creds.json")
 
