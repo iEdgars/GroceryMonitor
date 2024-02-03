@@ -131,3 +131,4 @@ dmypy.json
 # Creds
 sa_creds.json
 ym_creds.json
+logfile.txt

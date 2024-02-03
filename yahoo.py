@@ -3,7 +3,18 @@ import imaplib
 import email
 import json
 from decimal import Decimal
-from datetime import date
+from datetime import date, datetime
+
+# Get the current date and time in UTC
+current_time = datetime.utcnow()
+
+# Convert the datetime object to a string
+time_string = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+# Open the text file in append mode
+with open("logfile.txt", "a") as file:
+    # Write the time and "Started" to the file
+    file.write(f'{time_string} Started\n')
 
 #connecting to GSeets and selecting the file
 sa = gspread.service_account(filename="sa_creds.json")
