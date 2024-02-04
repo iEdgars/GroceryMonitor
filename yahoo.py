@@ -225,6 +225,8 @@ wksItemsMaxima.append_rows(items)
 emailProcessLog('Maxima',maximaToAdd)
 wksEmails.append_rows(processedEmails)
 
+logging(log, f'emails: {processedEmails}')
+
 # Disconnect from the server
 imap_server.close()
 imap_server.logout()
