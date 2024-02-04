@@ -18,14 +18,23 @@ def logging(logFile, logMessage):
     # Write the time and "Started" to the file
         file.write(f'{time_string} {logMessage}\n')
 
-log = 'logfile.txt'
+# Get the directory of the current file
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+# Combine the directory path with your file name
+# file_path = os.path.join(dir_path, 'your_file.json')
+
+
+log = os.path.join(dir_path, 'logfile.txt')
 logging(log, 'Started')
 
 #connecting to GSeets and selecting the file
-sa = gspread.service_account(filename="sa_creds.json")
+saFile = os.path.join(dir_path, 'sa_creds.json')
+sa = gspread.service_account(filename=saFile)
 
+yFile = os.path.join(dir_path, 'ym_creds.json')
 #read credentials from json
-with open("ym_creds.json", "r") as f:
+with open(yFile, "r") as f:
     jmCreds = json.load(f)
 
 #Receipt Summary Data:
